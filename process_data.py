@@ -3,6 +3,8 @@ import os
 import numpy as np
 import re
 import cv2
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
 
 
 def read_pgm(filename, byteorder='>'):
@@ -41,9 +43,40 @@ def get_parsed_data(dir="data"):
     return faces, labels
 
 
+def create_model(X, y):
+    # X_train, X_test, y_train, y_test = X, X, y, y
+    y = np.array(y)
+    # X = np.array(X)
+    X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                        shuffle=True,
+                                                        stratify=y,
+                                                        random_state=42)
+    y_test_pred = []
+    y_train_pred = []
+    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    face_recognizer.train(X_train, y_train)
+    for image in X_test:
+        y_test_pred.append(face_recognizer.predict(image))
+    
+    for image in X_train:
+        y_train_pred.append(face_recognizer.predict(image))
+
+    y_test_pred = np.array([c for c, _ in y_test_pred])
+    y_train_pred = np.array([c for c, _ in y_train_pred])
+    
+    print(accuracy_score(y_test, y_test_pred),
+          classification_report(y_test, y_test_pred))
+        #   precision_score(y_test, y_test_pred),
+        #   recall_score(y_test, y_test_pred))
+
+    print(accuracy_score(y_train, y_train_pred),
+          classification_report(y_train, y_train_pred))
+        #   precision_score(y_train, y_train_pred),
+        #   recall_score(y_train, y_train_pred))
+
 if __name__ == "__main__":
     faces, labels = get_parsed_data()
-    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-    face_recognizer.train(faces, np.array(labels))
-    label_predict = face_recognizer.predict(faces[23])
-    print(labels[23], label_predict)
+    create_model(faces, labels)
+    # face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    # face_recognizer.train(faces, np.array(labels))
+    # label_predict = face_recognizer.predict(faces[23])
