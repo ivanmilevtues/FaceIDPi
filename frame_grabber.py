@@ -4,6 +4,8 @@ import os
 
 
 def main_loop():
+    model = cv2.face.LBPHFaceRecognizer_create()
+    model.read("model.cv2")
     cap = cv2.VideoCapture(0)
     face_cascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
     while True:
@@ -16,14 +18,15 @@ def main_loop():
         if len(faces) > 0:
             x, y, w, h = faces[0]
             gray = gray[y: y+h, x: x+w]
+            print(model.predict(gray))
         else:
             for x, y, w, h in faces:
                 # gray = gray[x: x+w, y: y+h]
                 cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-        cv2.imshow('Camera1', gray)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        # cv2.imshow('Camera1', gray)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
 
     cap.release()
     cv2.destroyAllWindows()
@@ -65,4 +68,4 @@ def save_img(img, dir='data'):
 
     
 if __name__ == '__main__':
-    add_face_to_data()
+    main_loop()
