@@ -5,28 +5,24 @@ import re
 import cv2
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+from PIL import Image
+
+
+FACE_CASCADE = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
 
 
 def read_pgm(filename, byteorder='>'):
-    """Return image data from a raw PGM file as numpy array.
-    Format specification: http://netpbm.sourceforge.net/doc/pgm.html
     """
-    with open(filename, 'rb') as f:
-        buffer = f.read()
-    try:
-        header, width, height, maxval = re.search(
-            b"(^P5\s(?:\s*#.*[\r\n])*"
-            b"(\d+)\s(?:\s*#.*[\r\n])*"
-            b"(\d+)\s(?:\s*#.*[\r\n])*"
-            b"(\d+)\s(?:\s*#.*[\r\n]\s)*)", buffer).groups()
-    except AttributeError:
-        raise ValueError("Not a raw PGM file: '%s'" % filename)
-    return np.frombuffer(buffer,
-                            dtype='u1' if int(
-                                maxval) < 256 else byteorder+'u2',
-                            count=int(width)*int(height),
-                            offset=len(header)
-                            ).reshape((int(height), int(width)))
+    Uncomment lines 16, 17 to convert jpgs to pgm
+    NOTE: When runned with the classifiers will be taken twice
+    1st: picture.jpg -> converted to pgm and taken
+    2nd: picture.pgm -> opened and taken
+    """
+    # if '.jpg' in filename:
+    #     filename = convert_jpg_pgm(filename)
+    img = cv2.imread(filename)
+    print(img.shape)
+    return  cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
 def get_parsed_data(dir="data"):
@@ -37,6 +33,8 @@ def get_parsed_data(dir="data"):
         for name in files:
             file_paths.append(os.path.join(directory, name))
         for file in file_paths:
+            if 'JPGS' in file:
+                continue
             label = int(file.split('\\')[1].split('s')[1])
             faces.append(read_pgm(file))
             labels.append(label)
@@ -74,10 +72,24 @@ def create_model(X, y):
           classification_report(y_train, y_train_pred))
         #   precision_score(y_train, y_train_pred),
         #   recall_score(y_train, y_train_pred))
+    return face_recognizer
+
+
+def convert_jpg_pgm(filename):
+    img = Image.open(filename)
+    filename = filename.split('.')[0] + '.pgm'
+    print(filename)
+    try:
+        img = img.save(filename)
+    except IOError:
+        print("Convertion error")
+    return filename
+
 
 if __name__ == "__main__":
     faces, labels = get_parsed_data()
-    create_model(faces, labels)
+    model = create_model(faces, labels)
+    model.write("model.cv2")
     # face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     # face_recognizer.train(faces, np.array(labels))
     # label_predict = face_recognizer.predict(faces[23])
