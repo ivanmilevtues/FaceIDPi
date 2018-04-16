@@ -1,35 +1,34 @@
 import numpy as np
 import cv2
 import os
+from face_recognition import make_desicion
 
 
 def main_loop():
     model = cv2.face.LBPHFaceRecognizer_create()
     model.read("model.cv2")
-    cap = cv2.VideoCapture(0)
+    cam_hd = cv2.VideoCapture(0)
+    cam_ld = cv2.VideoCapture(1)
     face_cascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
-    while True:
-        ret, frame = cap.read()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    try:
+        while True:
+            ret, frame_hd = cam_hd.read()
+            ret, frame_ld = cam_ld.read()
 
-        faces = face_cascade.detectMultiScale(
-            gray, scaleFactor=1.1, minNeighbors=5)
+            gray_hd = cv2.cvtColor(frame_hd, cv2.COLOR_BGR2GRAY)
+            gray_ld = cv2.cvtColor(frame_ld, cv2.COLOR_BGR2GRAY)
 
-        if len(faces) > 0:
-            x, y, w, h = faces[0]
-            gray = gray[y: y+h, x: x+w]
-            print(model.predict(gray))
-        else:
-            for x, y, w, h in faces:
-                # gray = gray[x: x+w, y: y+h]
-                cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            faces_hd = face_cascade.detectMultiScale(
+                gray_hd, scaleFactor=1.1, minNeighbors=5)
 
-        # cv2.imshow('Camera1', gray)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
-
-    cap.release()
-    cv2.destroyAllWindows()
+            faces_ld = face_cascade.detectMultiScale(
+                gray_ld, scaleFactor=1.1, minNeighbors=5)
+            
+            if len(faces_hd) > 0 or len(faces_ld) > 0:
+                make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model)
+    finally:
+        cam_hd.release()
+        cam_ld.release()
 
 
 def add_face_to_data():

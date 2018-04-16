@@ -1,5 +1,4 @@
-import RPi.GPIO as GPIO
-
+# import RPi.GPIO as GPIO
 
 
 def setup():
@@ -8,12 +7,12 @@ def setup():
 
     channel_list = [1, 2, 3]
 
-
     GPIO.setup(channel_list, GPIO.OUT)
     GPIO.output(channel_list, GPIO.HIGH)
 
 def release_relay():
-    GPIO.output(2, GPIO.LOW)
+    print("RELAY RELEASED")
+    # GPIO.output(2, GPIO.LOW)
 
 
 def on_end():
