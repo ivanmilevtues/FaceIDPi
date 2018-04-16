@@ -1,18 +1,18 @@
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import sys
+
 
 def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
 
-    channel_list = [1, 2, 3]
+    channel_list = [2, 3, 4, 17]
 
     GPIO.setup(channel_list, GPIO.OUT)
     GPIO.output(channel_list, GPIO.HIGH)
 
 def release_relay():
-    print("RELAY RELEASED")
-    # GPIO.output(2, GPIO.LOW)
+    GPIO.output(2, GPIO.LOW)
 
 
 def on_end():

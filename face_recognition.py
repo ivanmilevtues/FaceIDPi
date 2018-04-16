@@ -1,5 +1,6 @@
 from ALLOWED_USERS import ALLOWED_USERS
 from gpio_controller import release_relay
+import os
 
 
 def predict_person(gray_hd, faces_hd, gray_ld, faces_ld, model):
@@ -31,7 +32,7 @@ def make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model):
        lbl,  confidence = predict_person(gray_hd, faces_hd, gray_ld, faces_ld, model)
        print(lbl, confidence)
        if confidence >= 100 and lbl in ALLOWED_USERS:
-           eval("python2.7 gpio_contoller 0")
+           os.system("python2.7 gpio_contoller 0")
     except FacePredictException:
         pass
 

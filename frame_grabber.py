@@ -5,7 +5,7 @@ from face_recognition import make_desicion
 
 
 def main_loop():
-    eval("python2.7 gpio_contoller 1")
+    os.system("python2.7 gpio_contoller 1")
     model = cv2.face.LBPHFaceRecognizer_create()
     model.read("model.cv2")
     cam_hd = cv2.VideoCapture(0)
@@ -28,7 +28,7 @@ def main_loop():
             if len(faces_hd) > 0 or len(faces_ld) > 0:
                 make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model)
     finally:
-        eval("python2.7 gpio_contoller -1")
+        os.system("python2.7 gpio_contoller -1")
         cam_hd.release()
         cam_ld.release()
 
