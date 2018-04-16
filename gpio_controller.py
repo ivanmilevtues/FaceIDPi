@@ -6,13 +6,14 @@ def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
 
-    channel_list = [2, 3, 4, 17]
+    channel_list = [3, 5, 7, 11]
 
     GPIO.setup(channel_list, GPIO.OUT)
     GPIO.output(channel_list, GPIO.HIGH)
 
 def release_relay():
-    GPIO.output(2, GPIO.LOW)
+    print("RELEASE RELAY CALLED")
+    GPIO.output(5, GPIO.LOW)
 
 
 def on_end():
