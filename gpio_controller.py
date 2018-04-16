@@ -20,9 +20,8 @@ def on_end():
 
 
 if __name__ == "__main__":
+    setup()
     arg = int(sys.argv[1])
-    if arg == 1:
-        setup()
     if arg == 0:
         release_relay()
     if arg == -1:
