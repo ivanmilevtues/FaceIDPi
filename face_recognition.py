@@ -1,5 +1,4 @@
 from ALLOWED_USERS import ALLOWED_USERS
-from gpio_controller import release_relay
 import os
 
 
