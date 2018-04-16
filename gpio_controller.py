@@ -1,5 +1,5 @@
 # import RPi.GPIO as GPIO
-
+import sys
 
 def setup():
     GPIO.setmode(GPIO.BOARD)
@@ -17,3 +17,13 @@ def release_relay():
 
 def on_end():
     GPIO.cleanup()
+
+
+if __name__ == "__main__":
+    arg = int(sys.argv[1])
+    if arg == 1:
+        setup()
+    if arg == 0:
+        release_relay()
+    if arg == -1:
+        on_end()
