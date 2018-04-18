@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import sys
+from time import sleep
 
 
 def setup():
@@ -13,6 +14,8 @@ def setup():
 
 def release_relay():
     GPIO.output(2, GPIO.LOW)
+    sleep(5)
+    GPIO.output(2, GPIO.HIGH)
 
 
 def on_end():
