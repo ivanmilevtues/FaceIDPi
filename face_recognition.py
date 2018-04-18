@@ -1,5 +1,17 @@
 from ALLOWED_USERS import ALLOWED_USERS
 import os
+import sys
+import cv2
+import numpy as np
+
+
+def show_face(gray_hd, gray_ld):
+    if sys.platform == "linux":
+        return
+    horizontal_stack = np.hstack((gray_hd, gray_ld))
+    cv2.imshow('HD', horizontal_stack)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        pass
 
 
 def predict_person(gray_hd, faces_hd, gray_ld, faces_ld, model):
@@ -16,6 +28,12 @@ def predict_person(gray_hd, faces_hd, gray_ld, faces_ld, model):
      
     gray_hd = gray_hd[y: y+h, x: x+w]
     gray_ld = gray_ld[y_ld: y_ld+h_ld, x_ld: x_ld+w_ld]
+
+    # Scale
+    gray_hd = cv2.resize(gray_hd, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
+    gray_ld = cv2.resize(gray_ld, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
+
+    show_face(gray_hd, gray_ld)
 
     hd_pred_y, conf_hd = model.predict(gray_hd)
     ld_pred_y, conf_ld = model.predict(gray_ld)

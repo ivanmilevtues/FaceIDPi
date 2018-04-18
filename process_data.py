@@ -11,7 +11,7 @@ from PIL import Image
 FACE_CASCADE = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
 
 
-def read_pgm(filename, byteorder='>'):
+def read_pgm(filename):
     """
     Uncomment lines 16, 17 to convert jpgs to pgm
     NOTE: When runned with the classifiers will be taken twice
@@ -21,6 +21,8 @@ def read_pgm(filename, byteorder='>'):
     # if '.jpg' in filename:
     #     filename = convert_jpg_pgm(filename)
     img = cv2.imread(filename)
+    print(img.shape)
+    img = cv2.resize(img, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
     print(img.shape)
     return  cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
