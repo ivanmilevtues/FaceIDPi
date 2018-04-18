@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import os
-from face_recognition import make_desicion
+from face_recognition import make_desicion, show_face
 
 
 def main_loop():
@@ -24,7 +24,7 @@ def main_loop():
 
             faces_ld = face_cascade.detectMultiScale(
                 gray_ld, scaleFactor=1.1, minNeighbors=5)
-            
+            show_face(gray_hd, gray_ld, faces_hd, faces_ld)
             if len(faces_hd) > 0 or len(faces_ld) > 0:
                 make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model)
     finally:

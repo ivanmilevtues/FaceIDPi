@@ -5,10 +5,20 @@ import cv2
 import numpy as np
 
 
-def show_face(gray_hd, gray_ld):
+def show_face(gray_hd, gray_ld, face_hd=[], face_ld=[]):
+    horizontal_stack = None
+
     if sys.platform == "linux":
         return
+        
+    if len(face_ld) > 0 or len(face_hd) > 0:
+        for x, y, w, h in face_hd:
+            cv2.rectangle(gray_hd, (x, y), (x + w, y + h), (255,0,0), 2)
+        for x, y, w, h in face_ld:
+            cv2.rectangle(gray_ld, (x, y), (x + w, y + h), (255,0,0), 2)
+    
     horizontal_stack = np.hstack((gray_hd, gray_ld))
+
     cv2.imshow('HD', horizontal_stack)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         pass
@@ -33,7 +43,7 @@ def predict_person(gray_hd, faces_hd, gray_ld, faces_ld, model):
     gray_hd = cv2.resize(gray_hd, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
     gray_ld = cv2.resize(gray_ld, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
 
-    show_face(gray_hd, gray_ld)
+    # show_face(gray_hd, gray_ld)
 
     hd_pred_y, conf_hd = model.predict(gray_hd)
     ld_pred_y, conf_ld = model.predict(gray_ld)
