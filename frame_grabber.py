@@ -53,11 +53,11 @@ def add_face_to_data():
         gray_hd, gray_ld, faces_hd, faces_ld = cap_get_faces(cam_hd, cam_ld,
                                                              face_cascade)
         show_face(gray_hd, gray_ld, faces_hd, faces_ld)
-        if len(faces_hd) > 0:
+        if len(faces_hd) > 0 and i < 10:
             x, y, w, h = faces_hd[0]
             save_img(gray_hd[y: y+h, x: x+w], dir_name)
             i += 1
-        if len(faces_ld) > 0:
+        if len(faces_ld) > 0 and k < 10:
             x, y, w, h = faces_ld[0]
             save_img(gray_ld[y: y+h, x: x+w], dir_name, cam='ld')
             k += 1
