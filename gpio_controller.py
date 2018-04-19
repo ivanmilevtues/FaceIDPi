@@ -3,15 +3,19 @@ import sys
 from time import sleep
 
 
-def setup():
+def btn_setup():
+    GPIO.setmode(GPIO.BOARD)
+    channel_in = [13]
+    GPIO.setup(channel_in, GPIO.IN)
+    GPIO.setup(channel_list, GPIO.OUT)
+
+
+def relay_setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
 
     channel_list = [3, 5, 7, 11]
-    channel_in = [13]
 
-    GPIO.setup(channel_list, GPIO.OUT)
-    GPIO.setup(channel_in, GPIO.IN)
     GPIO.output(channel_list, GPIO.HIGH)
 
 
@@ -32,9 +36,10 @@ def read_btn():
 if __name__ == "__main__":
     arg = int(sys.argv[1])
     if arg == 0:
-        setup()
+        relay_setup()
         release_relay()
+    if arg == 1:
+        btn_setup()
+        read_btn()
     if arg == -1:
         on_end()
-    if arg == 1:
-        read_btn()
