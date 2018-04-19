@@ -4,6 +4,7 @@ import os
 from face_recognition import make_desicion, show_face
 from time import time, sleep
 from process_data import main
+import sys
 
 
 def main_loop():
@@ -40,7 +41,11 @@ def add_face_to_data():
     face_cascade = cv2.CascadeClassifier(
         './haarcascade_frontalface_default.xml')
     
-    dir_name = get_dir()
+    if sys.platform == 'linux':
+        dir_name = get_dir('/home/pi/Workspace/FaceIDPi/data')
+    else:
+        dir_name = get_dir()
+
     i, k = 0, 0
     while True:
         gray_hd, gray_ld, faces_hd, faces_ld = cap_get_faces(cam_hd, cam_ld,
