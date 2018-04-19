@@ -19,7 +19,7 @@ def release_relay():
     print("REALY Release")
     GPIO.output(5, GPIO.LOW)
     sleep(5)
-    GPIO.output(5, GPIO.HIGH))
+    GPIO.output(5, GPIO.HIGH)
 
 
 def on_end():

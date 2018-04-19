@@ -23,6 +23,7 @@ def main_loop():
             if len(faces_hd) > 0 or len(faces_ld) > 0:
                 make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model)
             result_stat = int(os.system('python2.7 gpio_controller.py 1'))
+            print("Result status", result_stat)
             if result_stat == 1:
                 cam_hd.release()
                 cam_ld.release()
