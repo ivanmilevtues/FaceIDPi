@@ -41,10 +41,7 @@ def add_face_to_data():
     face_cascade = cv2.CascadeClassifier(
         './haarcascade_frontalface_default.xml')
     
-    if sys.platform == 'linux':
-        dir_name = get_dir('/home/pi/Workspace/FaceIDPi/data')
-    else:
-        dir_name = get_dir()
+    dir_name = get_dir()
 
     i, k = 0, 0
     while True:
@@ -73,12 +70,15 @@ def add_face_to_data():
 
 def get_dir(dir='data'):
     dir_num = 0
+    split_reg = '\\'
+    if sys.platform == 'linux':
+        split_reg = '/'
     for directory, _, files in os.walk(dir, topdown=False):
         file_paths = []
         for name in files:
             file_paths.append(os.path.join(directory, name))
         for file in file_paths:
-            curr_dir_num = int(file.split('\\')[1].split('s')[1])
+            curr_dir_num = int(file.split(split_reg)[1].split('s')[1])
             dir_num = curr_dir_num if curr_dir_num > dir_num else dir_num
     
     dir_num += 1
