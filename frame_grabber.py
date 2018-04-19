@@ -7,6 +7,11 @@ from process_data import main
 import sys
 
 
+slash = '\\'
+if sys.platform == 'linux':
+    slash = '/'
+
+
 def main_loop():
     os.system("python2.7 gpio_controller.py 1")
     model = cv2.face.LBPHFaceRecognizer_create()
@@ -59,6 +64,8 @@ def add_face_to_data():
 
         if i >= 9 and k >= 9:
             break
+        print('HD picks:', i)
+        print('LD picks:',k)
         sleep(1)
 
     cam_hd.release()
@@ -70,27 +77,23 @@ def add_face_to_data():
 
 def get_dir(dir='data'):
     dir_num = 0
-    split_reg = '\\'
-    if sys.platform == 'linux':
-        split_reg = '/'
     for directory, _, files in os.walk(dir, topdown=False):
         file_paths = []
         for name in files:
             file_paths.append(os.path.join(directory, name))
         for file in file_paths:
-            curr_dir_num = int(file.split(split_reg)[1].split('s')[1])
+            curr_dir_num = int(file.split(slash)[1].split('s')[1])
             dir_num = curr_dir_num if curr_dir_num > dir_num else dir_num
     
     dir_num += 1
-    dir_name = dir + '\\s' + str(dir_num)
+    dir_name = dir + slash + 's' + str(dir_num)
     return dir_name
 
 
 def save_img(img, dir_name, cam='hd'):
-    print(dir_name)
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
-    cv2.imwrite(filename=(dir_name + '\\' + str(int(time())) + cam + '.pgm'),
+    cv2.imwrite(filename=(dir_name + slash + str(int(time())) + cam + '.pgm'),
                 img=img)
 
 
