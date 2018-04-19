@@ -21,9 +21,7 @@ def read_pgm(filename):
     # if '.jpg' in filename:
     #     filename = convert_jpg_pgm(filename)
     img = cv2.imread(filename)
-    print(img.shape)
     img = cv2.resize(img, dsize=(92, 112), interpolation=cv2.INTER_CUBIC)
-    print(img.shape)
     return  cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 

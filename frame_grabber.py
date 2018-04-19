@@ -18,10 +18,15 @@ def main_loop():
         while True:
             gray_hd, gray_ld, faces_hd, faces_ld = cap_get_faces(cam_hd, cam_ld,
                                                                  face_cascade)
-            
+
             show_face(gray_hd, gray_ld, faces_hd, faces_ld)
             if len(faces_hd) > 0 or len(faces_ld) > 0:
                 make_desicion(gray_hd, faces_hd, gray_ld, faces_ld, model)
+            result_stat = int(os.system('python2.7 gpio_controller.py 1'))
+            if result_stat == 1:
+                cam_hd.release()
+                cam_ld.release()
+                add_face_to_data()
     finally:
         os.system("python2.7 gpio_controller.py -1")
         cam_hd.release()
