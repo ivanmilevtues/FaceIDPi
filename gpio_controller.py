@@ -7,7 +7,6 @@ def btn_setup():
     GPIO.setmode(GPIO.BOARD)
     channel_in = [13]
     GPIO.setup(channel_in, GPIO.IN)
-    GPIO.setup(channel_list, GPIO.OUT)
 
 
 def relay_setup():
@@ -16,6 +15,7 @@ def relay_setup():
 
     channel_list = [3, 5, 7, 11]
 
+    GPIO.setup(channel_list, GPIO.OUT)
     GPIO.output(channel_list, GPIO.HIGH)
 
 
