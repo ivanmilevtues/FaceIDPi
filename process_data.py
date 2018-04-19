@@ -7,6 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 from PIL import Image
 
+slash = '\\'
+if sys.platform == 'linux':
+    slash = '/'
 
 FACE_CASCADE = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
 
@@ -35,7 +38,7 @@ def get_parsed_data(dir="data"):
         for file in file_paths:
             if 'JPGS' in file:
                 continue
-            label = int(file.split('\\')[1].split('s')[1])
+            label = int(file.split(slash)[1].split('s')[1])
             faces.append(read_pgm(file))
             labels.append(label)
     return faces, labels
