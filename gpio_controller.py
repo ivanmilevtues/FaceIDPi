@@ -12,6 +12,7 @@ def setup():
     GPIO.setup(channel_list, GPIO.OUT)
     GPIO.output(channel_list, GPIO.HIGH)
 
+
 def release_relay():
     print("REALY Release")
     GPIO.output(5, GPIO.LOW)

@@ -88,10 +88,15 @@ def convert_jpg_pgm(filename):
     return filename
 
 
-if __name__ == "__main__":
+def main():
     faces, labels = get_parsed_data()
     model = create_model(faces, labels)
+    del faces
+    del labels
     model.write("model.cv2")
+
+if __name__ == "__main__":
+    main()
     # face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     # face_recognizer.train(faces, np.array(labels))
     # label_predict = face_recognizer.predict(faces[23])
